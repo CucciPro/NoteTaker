@@ -1,23 +1,23 @@
 const router = require("express").Router();
-const fs = require("fs")
-const { v4: uuid } = require('uuid')
-const path = require("path")
-
-let old = JSON.parse(fs.readFileSync(path.join(__dirname,"../db/db.json")))
+const notes = require('../public/assets/js/notes');
 
 router.get("/notes", (req, res) => {
-    res.sendFile(path.join(__dirname, "../db/db.json"));
+    notes.getNotes()
+    .then(notes => res.json(notes))
+    .catch(err => res.status(500).json(err));
 });
 
 router.post("/notes", (req, res) => {
-    let note = {
-        id:uuid(),
-        title:req.body.title,
-        text:req.body.text
-    };
-    old.push(note)
-    fs.writeFileSync("./db/db.json",JSON.stringify(old))
-    res.json(old)
+    notes.addNote(req.body)
+    .then(notes => res.json(notes))
+    .catch(err => res.status(500).json(err));
+});
+
+
+router.delete("/notes/:id", (req, res) => {
+    notes.remove(req.params.id)
+        .then(() => res.json({ok: true}))
+        .catch(err => res.status(500).json(err));
 });
 
 module.exports = router;
