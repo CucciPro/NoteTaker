@@ -12,7 +12,6 @@ An application capable of saving notes to a database and displaying said notes.
 
 * [Installation](#installation)
 * [Usage](#usage)
-* [Contributions](#contributing)
 * [Mock Up](#mock)
 
 
